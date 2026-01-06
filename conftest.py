@@ -48,6 +48,9 @@ def pytest_runtest_makereport(item, call):
             except Exception as e:
                 print(f"Screenshot failed: {e}")
 
+        browser_logs = driver.get_log('browser')
+        allure.attach(str(browser_logs), name="Console Logs", attachment_type=allure.attachment_type.TEXT)
+
 
 
 

@@ -21,4 +21,8 @@ class BasePage:
         ele.clear()
         ele.send_keys(text)
 
+    def get_text(self, locator):
+        ele = (self.find_element(locator))
+        return ele.text
+
 
