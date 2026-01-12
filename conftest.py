@@ -4,6 +4,7 @@ import allure
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
+from common.api_client import ApiActions
 
 def pytest_addoption(parser):
     parser.addoption("--env", action="store", default="dev", help="Environment: dev or qa")
@@ -15,7 +16,7 @@ def config(request):
         return yaml.safe_load(f)
 
 @pytest.fixture(scope="function")
-def driver(config):
+def driver():
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service)
     driver.maximize_window()
@@ -25,6 +26,9 @@ def driver(config):
 
     driver.quit()
 
+@pytest.fixture(scope="session")
+def api_actions(config):
+    return ApiActions(config)
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
